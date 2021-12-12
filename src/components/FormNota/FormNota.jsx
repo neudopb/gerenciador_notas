@@ -7,6 +7,22 @@ class FormNota extends Component {
     this.titulo = "";
     this.texto = "";
     this.categoria = "";
+
+    this.state = {categorias : []};
+
+    this._novasCategorias = this._novasCategorias.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.categorias.inscrever(this._novasCategorias);
+  }
+
+  componentWillUnmount() {
+    this.props.categorias.desinscrever(this._novasCategorias);
+  }
+
+  _novasCategorias(categorias) {
+    this.setState({...this.state, categorias});
   }
 
   _handleCategoria(event) {
@@ -37,9 +53,9 @@ class FormNota extends Component {
         
         <select onChange={this._handleCategoria.bind(this)} className="form-cadastro-input">
           <option>Sem Categoria</option>
-          {this.props.categorias.map((categoria) => {
+          {this.state.categorias.map((categoria, index) => {
             return (
-              <option>{categoria}</option>
+              <option key={index}>{categoria}</option>
             )
           })}
         </select>
