@@ -6,6 +6,12 @@ class FormNota extends Component {
     super(props);
     this.titulo = "";
     this.texto = "";
+    this.categoria = "";
+  }
+
+  _handleCategoria(event) {
+    event.stopPropagation();
+    this.categoria = event.target.value;
   }
 
   _handleTitulo(event) {
@@ -21,13 +27,22 @@ class FormNota extends Component {
   _criarNota(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.props.criarNota(this.titulo, this.texto);
+    this.props.criarNota(this.titulo, this.texto, this.categoria);
   }
 
   render() {
     return (
       <form className="form-cadastro" onSubmit={this._criarNota.bind(this)}>
         <h2 className="form-cadastro-titulo">Gerenciador de Notas</h2>
+        
+        <select onChange={this._handleCategoria.bind(this)} className="form-cadastro-input">
+          <option>Sem Categoria</option>
+          {this.props.categorias.map((categoria) => {
+            return (
+              <option>{categoria}</option>
+            )
+          })}
+        </select>
         <input
           type="text"
           placeholder="Titulo"
